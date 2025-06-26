@@ -1,0 +1,131 @@
+{% extends 'base.html' %}
+{% load i18n %}
+{% load django_bootstrap5 %}
+
+{% block title %}{% trans "Add New Patient" %}{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-md-10 col-lg-8">
+        <div class="card shadow-sm">
+            <div class="card-header bg-primary text-white">
+                <h3 class="mb-0">
+                    <i class="fas fa-user-plus me-2"></i>
+                    {% trans "Add New Patient" %}
+                </h3>
+            </div>
+            <div class="card-body">
+                <form method="post" class="needs-validation" novalidate>
+                    {% csrf_token %}
+                    
+                    <!-- Personal Information Section -->
+                    <div class="row mb-4">
+                        <div class="col-12">
+                            <h5 class="text-primary border-bottom pb-2 mb-3">
+                                <i class="fas fa-user me-2"></i>
+                                {% trans "Personal Information" %}
+                            </h5>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            {% bootstrap_field form.first_name show_label=True %}
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            {% bootstrap_field form.last_name show_label=True %}
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            {% bootstrap_field form.date_of_birth show_label=True %}
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            {% bootstrap_field form.phone show_label=True %}
+                        </div>
+                        <div class="col-12 mb-3">
+                            {% bootstrap_field form.email show_label=True %}
+                        </div>
+                    </div>
+
+                    <!-- Contact Information Section -->
+                    <div class="row mb-4">
+                        <div class="col-12">
+                            <h5 class="text-primary border-bottom pb-2 mb-3">
+                                <i class="fas fa-map-marker-alt me-2"></i>
+                                {% trans "Contact Information" %}
+                            </h5>
+                        </div>
+                        <div class="col-12 mb-3">
+                            {% bootstrap_field form.address show_label=True %}
+                        </div>
+                        <div class="col-12 mb-3">
+                            {% bootstrap_field form.emergency_contact show_label=True %}
+                        </div>
+                    </div>
+
+                    <!-- Medical Information Section -->
+                    <div class="row mb-4">
+                        <div class="col-12">
+                            <h5 class="text-primary border-bottom pb-2 mb-3">
+                                <i class="fas fa-stethoscope me-2"></i>
+                                {% trans "Medical Information" %}
+                            </h5>
+                        </div>
+                        <div class="col-12 mb-3">
+                            {% bootstrap_field form.medical_notes show_label=True %}
+                        </div>
+                    </div>
+
+                    <!-- Action Buttons -->
+                    <div class="row">
+                        <div class="col-12">
+                            <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+                                <a href="{% url 'patients:list' %}" class="btn btn-outline-secondary me-md-2">
+                                    <i class="fas fa-times me-1"></i>
+                                    {% trans "Cancel" %}
+                                </a>
+                                <button type="submit" class="btn btn-primary">
+                                    <i class="fas fa-save me-1"></i>
+                                    {% trans "Save Patient" %}
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <!-- Help Information -->
+        <div class="row mt-4">
+            <div class="col-12">
+                <div class="alert alert-info">
+                    <h6 class="alert-heading">
+                        <i class="fas fa-info-circle me-1"></i>
+                        {% trans "Information" %}
+                    </h6>
+                    <ul class="mb-0 small">
+                        <li>{% trans "Fields marked with * are required" %}</li>
+                        <li>{% trans "Patient information will be kept confidential" %}</li>
+                        <li>{% trans "You can edit this information later from the patient details page" %}</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+// Form validation
+(function() {
+    'use strict';
+    window.addEventListener('load', function() {
+        var forms = document.getElementsByClassName('needs-validation');
+        var validation = Array.prototype.filter.call(forms, function(form) {
+            form.addEventListener('submit', function(event) {
+                if (form.checkValidity() === false) {
+                    event.preventDefault();
+                    event.stopPropagation();
+                }
+                form.classList.add('was-validated');
+            }, false);
+        });
+    }, false);
+})();
+</script>
+{% endblock %}

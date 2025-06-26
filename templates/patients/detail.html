@@ -1,0 +1,156 @@
+{% extends 'base.html' %}
+{% load i18n %}
+
+{% block title %}{{ patient.full_name }} - {% trans "Patient Details" %}{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col-12">
+        <div class="d-flex justify-content-between align-items-center mb-4">
+            <h2>
+                <i class="fas fa-user me-2"></i>
+                {{ patient.full_name }}
+            </h2>
+            <div>
+                <a href="{% url 'patients:list' %}" class="btn btn-outline-secondary">
+                    <i class="fas fa-arrow-left me-1"></i>
+                    {% trans "Back to Patients" %}
+                </a>
+                <a href="/admin/patients/patient/{{ patient.pk }}/change/" class="btn btn-primary">
+                    <i class="fas fa-edit me-1"></i>
+                    {% trans "Edit" %}
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <!-- Patient Information -->
+    <div class="col-md-8">
+        <div class="card mb-4">
+            <div class="card-header">
+                <h5 class="mb-0">
+                    <i class="fas fa-user me-2"></i>
+                    {% trans "Personal Information" %}
+                </h5>
+            </div>
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-md-6 mb-3">
+                        <strong>{% trans "First Name:" %}</strong><br>
+                        {{ patient.first_name }}
+                    </div>
+                    <div class="col-md-6 mb-3">
+                        <strong>{% trans "Last Name:" %}</strong><br>
+                        {{ patient.last_name }}
+                    </div>
+                    <div class="col-md-6 mb-3">
+                        <strong>{% trans "Phone:" %}</strong><br>
+                        <a href="tel:{{ patient.phone }}" class="text-decoration-none">
+                            <i class="fas fa-phone me-1"></i>{{ patient.phone }}
+                        </a>
+                    </div>
+                    <div class="col-md-6 mb-3">
+                        <strong>{% trans "Email:" %}</strong><br>
+                        {% if patient.email %}
+                            <a href="mailto:{{ patient.email }}" class="text-decoration-none">
+                                <i class="fas fa-envelope me-1"></i>{{ patient.email }}
+                            </a>
+                        {% else %}
+                            <span class="text-muted">{% trans "Not provided" %}</span>
+                        {% endif %}
+                    </div>
+                    <div class="col-md-6 mb-3">
+                        <strong>{% trans "Date of Birth:" %}</strong><br>
+                        {% if patient.date_of_birth %}
+                            {{ patient.date_of_birth|date }}
+                        {% else %}
+                            <span class="text-muted">{% trans "Not provided" %}</span>
+                        {% endif %}
+                    </div>
+                    <div class="col-md-6 mb-3">
+                        <strong>{% trans "Emergency Contact:" %}</strong><br>
+                        {% if patient.emergency_contact %}
+                            {{ patient.emergency_contact }}
+                        {% else %}
+                            <span class="text-muted">{% trans "Not provided" %}</span>
+                        {% endif %}
+                    </div>
+                    <div class="col-12 mb-3">
+                        <strong>{% trans "Address:" %}</strong><br>
+                        {% if patient.address %}
+                            {{ patient.address|linebreaks }}
+                        {% else %}
+                            <span class="text-muted">{% trans "Not provided" %}</span>
+                        {% endif %}
+                    </div>
+                    <div class="col-12">
+                        <strong>{% trans "Medical Notes:" %}</strong><br>
+                        {% if patient.medical_notes %}
+                            {{ patient.medical_notes|linebreaks }}
+                        {% else %}
+                            <span class="text-muted">{% trans "No medical notes" %}</span>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Quick Actions -->
+    <div class="col-md-4">
+        <div class="card mb-4">
+            <div class="card-header">
+                <h5 class="mb-0">
+                    <i class="fas fa-bolt me-2"></i>
+                    {% trans "Quick Actions" %}
+                </h5>
+            </div>
+            <div class="card-body">
+                <div class="d-grid gap-2">
+                    <a href="{% url 'appointments:book' %}" class="btn btn-success">
+                        <i class="fas fa-calendar-plus me-1"></i>
+                        {% trans "Book Appointment" %}
+                    </a>
+                    <a href="{% url 'appointments:list' %}" class="btn btn-info">
+                        <i class="fas fa-calendar-alt me-1"></i>
+                        {% trans "View Appointments" %}
+                    </a>
+                    <a href="/admin/patients/patient/{{ patient.pk }}/change/" class="btn btn-warning">
+                        <i class="fas fa-edit me-1"></i>
+                        {% trans "Edit Patient" %}
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <!-- Patient Stats -->
+        <div class="card">
+            <div class="card-header">
+                <h5 class="mb-0">
+                    <i class="fas fa-chart-bar me-2"></i>
+                    {% trans "Patient Statistics" %}
+                </h5>
+            </div>
+            <div class="card-body">
+                <div class="text-center">
+                    <h4 class="text-primary">{{ patient.appointment_set.count }}</h4>
+                    <small class="text-muted">
+                        {% blocktrans count counter=patient.appointment_set.count %}
+                            {{ counter }} appointment
+                        {% plural %}
+                            {{ counter }} appointments
+                        {% endblocktrans %}
+                    </small>
+                </div>
+                <hr>
+                <small class="text-muted">
+                    <strong>{% trans "Patient since:" %}</strong><br>
+                    {{ patient.created_at|date }}
+                </small>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

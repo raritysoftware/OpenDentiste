@@ -1,0 +1,85 @@
+{% extends 'base.html' %}
+{% load i18n %}
+
+{% block title %}{% trans "Welcome to OpenDentiste" %}{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col-12">
+        <div class="jumbotron bg-primary text-white p-5 rounded mb-4">
+            <h1 class="display-4">{% trans "Welcome to OpenDentiste" %}</h1>
+            <p class="lead">{% trans "A simple and efficient dental clinic management system" %}</p>
+            <hr class="my-4">
+            <p>{% trans "Manage your patients, appointments, and inventory all in one place." %}</p>
+            <a class="btn btn-light btn-lg" href="{% url 'appointments:book' %}" role="button">
+                {% trans "Book an Appointment" %}
+            </a>
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-md-4 mb-4">
+        <div class="card h-100">
+            <div class="card-body text-center">
+                <i class="fas fa-calendar-check fa-3x text-primary mb-3"></i>
+                <h5 class="card-title">{% trans "Appointments" %}</h5>
+                <p class="card-text">{% trans "Schedule and manage patient appointments efficiently." %}</p>
+                <a href="{% url 'appointments:list' %}" class="btn btn-primary">{% trans "View Appointments" %}</a>
+            </div>
+        </div>
+    </div>
+    
+    <div class="col-md-4 mb-4">
+        <div class="card h-100">
+            <div class="card-body text-center">
+                <i class="fas fa-users fa-3x text-success mb-3"></i>
+                <h5 class="card-title">{% trans "Patients" %}</h5>
+                <p class="card-text">{% trans "Maintain comprehensive patient records and information." %}</p>
+                <a href="{% url 'patients:list' %}" class="btn btn-success">{% trans "View Patients" %}</a>
+            </div>
+        </div>
+    </div>
+    
+    <div class="col-md-4 mb-4">
+        <div class="card h-100">
+            <div class="card-body text-center">
+                <i class="fas fa-boxes fa-3x text-warning mb-3"></i>
+                <h5 class="card-title">{% trans "Inventory" %}</h5>
+                <p class="card-text">{% trans "Track medical supplies and equipment inventory." %}</p>
+                <a href="{% url 'inventory:list' %}" class="btn btn-warning">{% trans "View Inventory" %}</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row mt-4">
+    <div class="col-12">
+        <div class="card">
+            <div class="card-header">
+                <h5 class="mb-0">{% trans "Quick Stats" %}</h5>
+            </div>
+            <div class="card-body">
+                <div class="row text-center">
+                    <div class="col-md-3">
+                        <h4 class="text-primary">--</h4>
+                        <small class="text-muted">{% trans "Total Patients" %}</small>
+                    </div>
+                    <div class="col-md-3">
+                        <h4 class="text-success">--</h4>
+                        <small class="text-muted">{% trans "Today's Appointments" %}</small>
+                    </div>
+                    <div class="col-md-3">
+                        <h4 class="text-warning">--</h4>
+                        <small class="text-muted">{% trans "Low Stock Items" %}</small>
+                    </div>
+                    <div class="col-md-3">
+                        <h4 class="text-info">--</h4>
+                        <small class="text-muted">{% trans "Pending Appointments" %}</small>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

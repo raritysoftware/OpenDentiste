@@ -1,0 +1,202 @@
+{% extends 'base.html' %}
+{% load i18n %}
+{% load django_bootstrap5 %}
+
+{% block title %}{% trans "Book Appointment" %}{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-md-10 col-lg-8">
+        <div class="card shadow-sm">
+            <div class="card-header bg-success text-white">
+                <h3 class="mb-0">
+                    <i class="fas fa-calendar-plus me-2"></i>
+                    {% trans "Book an Appointment" %}
+                </h3>
+            </div>
+            <div class="card-body">
+                <form method="post" class="needs-validation" novalidate>
+                    {% csrf_token %}
+                    
+                    <!-- Patient Selection -->
+                    <div class="row mb-4">
+                        <div class="col-12">
+                            <h5 class="text-success border-bottom pb-2 mb-3">
+                                <i class="fas fa-user me-2"></i>
+                                {% trans "Patient Information" %}
+                            </h5>
+                        </div>
+                        <div class="col-12 mb-3">
+                            {% bootstrap_field form.patient show_label=True %}
+                            <div class="form-text">
+                                {% trans "Don't see your name?" %} 
+                                <a href="{% url 'patients:create' %}" class="text-decoration-none">
+                                    {% trans "Register as a new patient" %}
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Appointment Details -->
+                    <div class="row mb-4">
+                        <div class="col-12">
+                            <h5 class="text-success border-bottom pb-2 mb-3">
+                                <i class="fas fa-calendar-alt me-2"></i>
+                                {% trans "Appointment Details" %}
+                            </h5>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            {% bootstrap_field form.date show_label=True %}
+                            <div class="form-text">
+                                <i class="fas fa-info-circle me-1"></i>
+                                {% trans "Select your preferred date" %}
+                            </div>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            {% bootstrap_field form.time show_label=True %}
+                            <div class="form-text">
+                                <i class="fas fa-clock me-1"></i>
+                                {% trans "Available: 9:00 AM - 6:00 PM" %}
+                            </div>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            {% bootstrap_field form.duration_minutes show_label=True %}
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            {% bootstrap_field form.subject show_label=True %}
+                        </div>
+                        <div class="col-12 mb-3">
+                            {% bootstrap_field form.notes show_label=True %}
+                        </div>
+                    </div>
+
+                    <!-- Form Errors -->
+                    {% if form.non_field_errors %}
+                        <div class="alert alert-danger">
+                            {{ form.non_field_errors }}
+                        </div>
+                    {% endif %}
+
+                    <!-- Action Buttons -->
+                    <div class="row">
+                        <div class="col-12">
+                            <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+                                <a href="{% url 'appointments:list' %}" class="btn btn-outline-secondary me-md-2">
+                                    <i class="fas fa-times me-1"></i>
+                                    {% trans "Cancel" %}
+                                </a>
+                                <button type="submit" class="btn btn-success">
+                                    <i class="fas fa-calendar-check me-1"></i>
+                                    {% trans "Book Appointment" %}
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <!-- Booking Information -->
+        <div class="row mt-4">
+            <div class="col-md-6">
+                <div class="alert alert-info">
+                    <h6 class="alert-heading">
+                        <i class="fas fa-info-circle me-1"></i>
+                        {% trans "Booking Information" %}
+                    </h6>
+                    <ul class="mb-0 small">
+                        <li>{% trans "Appointments are subject to confirmation" %}</li>
+                        <li>{% trans "You will be contacted within 24 hours" %}</li>
+                        <li>{% trans "Please arrive 15 minutes early" %}</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="alert alert-warning">
+                    <h6 class="alert-heading">
+                        <i class="fas fa-clock me-1"></i>
+                        {% trans "Business Hours" %}
+                    </h6>
+                    <ul class="mb-0 small">
+                        <li>{% trans "Monday - Friday: 9:00 AM - 6:00 PM" %}</li>
+                        <li>{% trans "Saturday: 9:00 AM - 2:00 PM" %}</li>
+                        <li>{% trans "Sunday: Closed" %}</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <!-- Available Times Display -->
+        <div class="row mt-3">
+            <div class="col-12">
+                <div class="card bg-light">
+                    <div class="card-body">
+                        <h6 class="card-title">
+                            <i class="fas fa-calendar-check me-1"></i>
+                            {% trans "Quick Time Selection" %}
+                        </h6>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <strong>{% trans "Morning:" %}</strong><br>
+                                <div class="btn-group-vertical btn-group-sm mt-1" role="group">
+                                    <button type="button" class="btn btn-outline-primary time-btn" data-time="09:00">9:00 AM</button>
+                                    <button type="button" class="btn btn-outline-primary time-btn" data-time="10:00">10:00 AM</button>
+                                    <button type="button" class="btn btn-outline-primary time-btn" data-time="11:00">11:00 AM</button>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <strong>{% trans "Afternoon:" %}</strong><br>
+                                <div class="btn-group-vertical btn-group-sm mt-1" role="group">
+                                    <button type="button" class="btn btn-outline-primary time-btn" data-time="14:00">2:00 PM</button>
+                                    <button type="button" class="btn btn-outline-primary time-btn" data-time="15:00">3:00 PM</button>
+                                    <button type="button" class="btn btn-outline-primary time-btn" data-time="16:00">4:00 PM</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+// Form validation
+(function() {
+    'use strict';
+    window.addEventListener('load', function() {
+        var forms = document.getElementsByClassName('needs-validation');
+        var validation = Array.prototype.filter.call(forms, function(form) {
+            form.addEventListener('submit', function(event) {
+                if (form.checkValidity() === false) {
+                    event.preventDefault();
+                    event.stopPropagation();
+                }
+                form.classList.add('was-validated');
+            }, false);
+        });
+    }, false);
+})();
+
+// Quick time selection
+document.addEventListener('DOMContentLoaded', function() {
+    const timeButtons = document.querySelectorAll('.time-btn');
+    const timeInput = document.querySelector('input[name="time"]');
+    
+    timeButtons.forEach(button => {
+        button.addEventListener('click', function() {
+            const time = this.getAttribute('data-time');
+            if (timeInput) {
+                timeInput.value = time;
+                // Remove active class from all buttons
+                timeButtons.forEach(btn => btn.classList.remove('btn-primary', 'active'));
+                timeButtons.forEach(btn => btn.classList.add('btn-outline-primary'));
+                // Add active class to clicked button
+                this.classList.remove('btn-outline-primary');
+                this.classList.add('btn-primary', 'active');
+            }
+        });
+    });
+});
+</script>
+{% endblock %}
